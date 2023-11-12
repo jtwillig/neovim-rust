@@ -1,17 +1,52 @@
 local M = {}
-
+local dap_sidebar = nil
 M.dap = {
   plugin = true,
   n = {
-    ["<leader>db"] = { "<cmd> DapToggleBreakpoint <CR>" },
-    ["<leader>dus"] = {
+    ["<leader>dl"] = { 
+	    "<cmd> RustDebuggables <CR>",
+	    "Launch",
+    },	  
+    ["<leader>db"] = { 
+	    "<cmd> DapToggleBreakpoint <CR>",
+	    "Toggle breakpoint",
+    },
+    ["<leader>dv"] = { 
+	    "<cmd> DapStepOver <CR>",
+	    "Step over",
+    },
+    ["<leader>du"] = { 
+	    "<cmd> DapStepOut <CR>",
+	    "Step out",
+    },
+    ["<leader>di"] = { 
+	    "<cmd> DapStepInto <CR>",
+	    "Step into",
+    },
+    ["<leader>dc"] = { 
+	    "<cmd> DapContinue <CR>",
+	    "Continue",
+    },
+    ["<leader>dt"] = { 
+	    "<cmd> DapTerminate <CR>",
+	    "Terminate",
+    },
+    ["<leader>ds"] = {
       function ()
         local widgets = require('dap.ui.widgets');
-        local sidebar = widgets.sidebar(widgets.scopes);
-        sidebar.open();
+	if dap_sidebar == nil then
+	  dap_sidebar = widgets.sidebar(widgets.scopes);
+	end
+        dap_sidebar.toggle();
       end,
-      "Open debugging sidebar"
-    }
+      "Toggle sidebar"
+    },
+    ["<leader>dr"] = {
+      function()
+        require('dap').repl.toggle();
+      end,
+      "Open REPL",
+    },
   }
 }
 
